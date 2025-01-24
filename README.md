@@ -15,7 +15,32 @@ https://universe.roboflow.com/dinh-ho/safety2r-tbo4l-jyd5o
 
 В наборе №1 присутствует 2 класса (0 - no-helmet, 1 - helmet), в наборе №2 - 5 классов (0 - helmet, 1 - no-helmet, 2 - safety vest, 3 - no-safety vest, 4 - shoes). Сначала необходимо привести их к одному виду путем отсечения во втором наборе лишних классов и заменой одного класса на другой. В итоге должно получится всего два класса (0 - no-helmet, 1 - helmet). Для этого использовался код из файлов reverse_labels.py и datasets_union.py. 
 
+Формат изображений: jpeg
+
+Формат аннотаций: txt
 
 
 
+При анализе объединенных датасетов было обнаружено, что большинство изображений не превышают размера 2000х2000px, а так же количество изображений суммарно составляет 42297 шт., из которых train 34349 шт. (81%), test 2488 шт. (6%), valid 5460 шт (13%).
+![Figure_1](https://github.com/user-attachments/assets/9b4e8fd4-d9e7-429c-9c65-48d981780176)
+
+Для анализа датасетов использовался код из файла observe_dataset.py.
+
+
+Далее анализировались объекты в датасетах. Всего обнаружено 122727 касок и 165119 голов без касок. В датасете большую часть занимают головы без касок (57%) по отношению к головам с касками (43%).
+
+
+
+Далее после того, как мы сформировали данные и проанализировлаи их, мы можем приступать к обучению модели. В качестве модели здесь выбрана YOLOv5, batch 16, 10 эпох.
+
+python train.py --img 640 --batch 16 --epochs 10 --data ./data/helmet.yaml --weights yolov5s.pt
+
+Получили следующие значения:
+
+![22 varik yolov5 batch 16 --epochs 10](https://github.com/user-attachments/assets/ddaa89cb-93c6-411c-8a54-60c53269be88)
+
+![confusion_matrix](https://github.com/user-attachments/assets/bdf2bb64-d306-4013-aa48-7208ed390614)
+![F1_curve](https://github.com/user-attachments/assets/748808d1-11c2-4c39-8ce9-ab8fc1d6586d)
+![PR_curve](https://github.com/user-attachments/assets/cfed453a-a942-4c2a-93a7-5496e06913fc)
+![results](https://github.com/user-attachments/assets/65e94a12-c77c-4aeb-bf15-cba7c15dc060)
 
